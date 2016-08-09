@@ -143,7 +143,11 @@ shared_examples_for Chef::Provider::File do
 
   after do
     tempfile.close if tempfile && !tempfile.closed?
-    File.unlink(tempfile.path) rescue nil
+    begin
+      File.unlink(tempfile.path)
+    rescue
+      nil
+    end
   end
 
   it "should return a #{described_class}" do

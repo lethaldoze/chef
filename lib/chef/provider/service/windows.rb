@@ -29,7 +29,11 @@ class Chef::Provider::Service::Windows < Chef::Provider::Service
   provides :windows_service, os: "windows"
 
   include Chef::Mixin::ShellOut
-  include Chef::ReservedNames::Win32::API::Error rescue LoadError
+  begin
+    include Chef::ReservedNames::Win32::API::Error
+  rescue
+    LoadError
+  end
 
   #Win32::Service.get_start_type
   AUTO_START = "auto start"

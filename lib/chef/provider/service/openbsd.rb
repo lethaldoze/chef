@@ -37,8 +37,16 @@ class Chef
 
         def initialize(new_resource, run_context)
           super
-          @rc_conf = ::File.read(RC_CONF_PATH) rescue ""
-          @rc_conf_local = ::File.read(RC_CONF_LOCAL_PATH) rescue ""
+          @rc_conf = begin
+                       ::File.read(RC_CONF_PATH)
+                     rescue
+                       ""
+                     end
+          @rc_conf_local = begin
+                             ::File.read(RC_CONF_LOCAL_PATH)
+                           rescue
+                             ""
+                           end
           @init_command = ::File.exist?(rcd_script_path) ? rcd_script_path : nil
           new_resource.status_command("#{default_init_command} check")
         end

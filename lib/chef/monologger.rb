@@ -58,7 +58,11 @@ class MonoLogger < Logger
     end
 
     def close
-      @dev.close rescue nil
+      begin
+        @dev.close
+      rescue
+        nil
+      end
     end
 
     private

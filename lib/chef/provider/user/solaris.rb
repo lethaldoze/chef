@@ -45,7 +45,11 @@ class Chef
         end
 
         def check_lock
-          shadow_line = shell_out!("getent", "shadow", new_resource.username).stdout.strip rescue nil
+          shadow_line = begin
+                          shell_out!("getent", "shadow", new_resource.username).stdout.strip
+                        rescue
+                          nil
+                        end
 
           # if the command fails we return nil, this can happen if the user
           # in question doesn't exist

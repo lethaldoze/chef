@@ -97,7 +97,11 @@ describe Chef::Provider::Cron::Unix do
       end
 
       it "logs the crontab output to debug" do
-        provider.send(:read_crontab) rescue nil
+        begin
+          provider.send(:read_crontab)
+        rescue
+          nil
+        end
         expect(Chef::Log).to have_received(:debug).with("formatted command output")
       end
     end
